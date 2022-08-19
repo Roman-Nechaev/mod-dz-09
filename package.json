@@ -2,7 +2,7 @@
   "name": "mod-dz-09",
   "version": "2.0.0",
   "description": "",
-  "homepage": "https://goitacademy.github.io/mod-dz-09",
+  "homepage": "https://Roman-Nechaev.github.io/mod-dz-09",
   "scripts": {
     "start": "parcel src/*.html",
     "build": "parcel build src/*.html --public-url /mod-dz-09/"
