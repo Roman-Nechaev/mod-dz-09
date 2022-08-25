@@ -9,16 +9,19 @@ btnStop.addEventListener('click', onBtnStop);
 
 function onbtnStart(evt) {
   // onIntervsl();
-  if (!onIntervsl()) {
+  if (!onIntervsl) {
     btnStart.setAttribute('disabled', true);
   } else {
-    btnStart.removeAttribute('disabled');
+    const foo = btnStart.removeAttribute('disabled');
+
+    onBtnStop(foo);
   }
 }
 
 function onIntervsl() {
   const intervalId = setInterval(onGenerColorsBG, 1000);
 }
+
 function onBtnStop(evt) {
   // clearInterval(intervalId);
   console.log('BtnStop');
