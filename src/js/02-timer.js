@@ -27,18 +27,18 @@ function onInput(evt) {
 }
 onInput(options);
 
-var countDownDate = new Date('2022-08-28').getTime();
-console.log('countDownDate', countDownDate);
+var countDownDate = new Date('2022-08-28').getTime(); // дата от которой начинаеться отчет
 
 function ClockTimer(params) {
   const intervalId = setInterval(() => {
-    var now = new Date().getTime();
-    const diff = now - countDownDate;
-    const time = convertMs(diff);
-    console.log('time', time);
+    var nowDate = new Date().getTime(); // сегодняшная дата
+    const diffDate = nowDate - countDownDate;
+    const countTimer = convertMs(diffDate);
+    console.log('time', countTimer);
   }, 1000);
-}
-ClockTimer();
+} //функция обратного отчета
+
+ClockTimer(); // запуск функции отбартного отчета
 
 // var timeinterval = setInterval(updateClock, 1000);
 // console.log('timeinterval', timeinterval);
