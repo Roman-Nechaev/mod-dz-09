@@ -19,26 +19,42 @@ img {
 }
 
 
-.all-btn{
+.all-btn {
   margin-top: 200px;
-text-align: center;
+  text-align: center;
 
 
 }
 
 .btn-1 {
 
-height: 70px;
-width: 150px;
-border-radius: 70;
+  height: 70px;
+  width: 150px;
+  border-radius: 70;
 
 }
 
 .btn-2 {
-height: 70px;
+  height: 70px;
   width: 100px;
-margin-left: 50px;
-border-radius: 70;
+  margin-left: 50px;
+  border-radius: 70;
 
 
+}
+
+.timer {
+  margin: 50px;
+  display: flex;
+
+  flex-direction: row;
+
+  justify-content: flex-start;
+
+  padding: 50px;
+
+}
+
+.field {
+  margin: auto
 }
