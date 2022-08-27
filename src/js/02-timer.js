@@ -6,7 +6,10 @@ const refs = {
   input: document.querySelector('input[type="text"]'),
   btn: document.querySelector('button[data-start]'),
   timer: document.querySelector('.timer'),
+  days: document.querySelector('[data-days]'),
 };
+console.log('days', days);
+
 // console.log('refs', refs.input);
 // console.log('refs', refs.btn);
 // console.log('refs', refs.timer);
@@ -27,12 +30,12 @@ function onInput(evt) {
 }
 onInput(options);
 
-var countDownDate = new Date('2022-08-28').getTime(); // дата от которой начинаеться отчет
-
+var countDownDate = new Date('2022-08-28'); // дата от которой начинаеться отчет
+// .getTime() НУЖНА ?
 function ClockTimer(params) {
   const intervalId = setInterval(() => {
-    var nowDate = new Date().getTime(); // сегодняшная дата
-    const diffDate = nowDate - countDownDate;
+    var nowDate = new Date(); // сегодняшная дата
+    const diffDate = countDownDate - nowDate;
     const countTimer = convertMs(diffDate);
     console.log('time', countTimer);
   }, 1000);
@@ -52,6 +55,10 @@ ClockTimer(); // запуск функции отбартного отчета
     }
 updateClock(); */
 
+function pad(value) {
+  return String(value).padStart(2, '0');
+}
+
 function convertMs(ms) {
   // Number of milliseconds per unit of time
   const second = 1000;
@@ -60,13 +67,13 @@ function convertMs(ms) {
   const day = hour * 24;
 
   // Remaining days
-  const days = Math.floor(ms / day);
+  const days = pad(Math.floor(ms / day));
   // Remaining hours
-  const hours = Math.floor((ms % day) / hour);
+  const hours = pad(Math.floor((ms % day) / hour));
   // Remaining minutes
-  const minutes = Math.floor(((ms % day) % hour) / minute);
+  const minutes = pad(Math.floor(((ms % day) % hour) / minute));
   // Remaining seconds
-  const seconds = Math.floor((((ms % day) % hour) % minute) / second);
+  const seconds = pad(Math.floor((((ms % day) % hour) % minute) / second));
 
   return { days, hours, minutes, seconds };
 }
