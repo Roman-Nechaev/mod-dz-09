@@ -1,4 +1,4 @@
-/* import flatpickr from 'flatpickr';
+import flatpickr from 'flatpickr';
 
 import 'flatpickr/dist/flatpickr.min.css';
 
@@ -27,21 +27,31 @@ function onInput(evt) {
 }
 onInput(options);
 
-const startTime = Date.now();
-// console.log('startTime', startTime);
-// const bar = new Date(15000);
-// const foo = bar - startTime;
-// console.log(convertMs(foo));
+var countDownDate = new Date('2022-08-28').getTime();
+console.log('countDownDate', countDownDate);
 
-function timerDate(e) {
+function ClockTimer(params) {
   const intervalId = setInterval(() => {
-    const diff = 2000;
-    const deadline = new Date(2021, 06, 01);
+    var now = new Date().getTime();
+    const diff = now - countDownDate;
     const time = convertMs(diff);
     console.log('time', time);
   }, 1000);
 }
-timerDate();
+ClockTimer();
+
+// var timeinterval = setInterval(updateClock, 1000);
+// console.log('timeinterval', timeinterval);
+/*  function updateClock() {
+    var t = getTimeRemaining(endtime);
+
+    if (t.total <= 0) {
+      clearInterval(timeinterval);
+      var deadline = new Date(Date.parse(new Date()) + 20 * 1000);
+      initializeClock('countdown', deadline);
+    }
+updateClock(); */
+
 function convertMs(ms) {
   // Number of milliseconds per unit of time
   const second = 1000;
@@ -60,8 +70,4 @@ function convertMs(ms) {
 
   return { days, hours, minutes, seconds };
 }
-
-console.log(convertMs(2000)); // {days: 0, hours: 0, minutes: 0, seconds: 2}
-console.log(convertMs(140000)); // {days: 0, hours: 0, minutes: 2, seconds: 20}
-console.log(convertMs(24140000)); // {days: 0, hours: 6 minutes: 42, seconds: 20}
- */
+// console.table(convertMs(2000)); // {days: 0, hours: 0, minutes: 0, seconds: 2}
