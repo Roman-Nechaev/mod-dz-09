@@ -3,19 +3,36 @@ import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
 
 const refs = {
+  // input: document.querySelector('#datetime-picker'),
   input: document.querySelector('input[type="text"]'),
+
   btn: document.querySelector('button[data-start]'),
   timer: document.querySelector('.timer'),
-  days: document.querySelector('[data-days]'),
+  days: document.querySelector('.value[data-days]'),
+  hours: document.querySelector('.value[data-hours]'),
+  minutes: document.querySelector('.value[data-minutes]'),
+  seconds: document.querySelector('[data-seconds]'),
 };
-console.log('days', days);
+
+console.log('days', refs.days.textContent);
+console.log('hours', refs.hours.textContent);
+console.log('minutes', refs.minutes.textContent);
+console.log('seconds', refs.seconds.textContent);
 
 // console.log('refs', refs.input);
 // console.log('refs', refs.btn);
 // console.log('refs', refs.timer);
-refs.input.addEventListener('input', onInput);
-flatpickr('input[type="text"]', onInput);
+var nowDate = new Date(); // сегодняшная дата
 
+let checkbtnStop = refs.btn.setAttribute('disabled', true);
+
+var countDownDate = '';
+
+refs.input.addEventListener('input', onInputValue);
+
+refs.btn.addEventListener('click', onStartTimerBtn);
+
+flatpickr('input[type="text"]', onflatpickr);
 const options = {
   enableTime: true,
   time_24hr: true,
@@ -25,36 +42,39 @@ const options = {
     console.log(selectedDates[0]);
   },
 };
-function onInput(evt) {
-  //   console.log(evt);
-}
-onInput(options);
 
-var countDownDate = new Date('2022-08-28'); // дата от которой начинаеться отчет
-// .getTime() НУЖНА ?
+onflatpickr(options);
+
+function onflatpickr(evt) {
+  refs.input.value = evt.defaultDate.toLocaleString();
+}
+
+function onInputValue(evt) {
+  countDownDate = new Date(evt.currentTarget.value);
+  if (countDownDate > nowDate) {
+    checkbtnStop = refs.btn.removeAttribute('disabled');
+  }
+  // console.log(evt.currentTarget.value);
+}
+
 function ClockTimer(params) {
   const intervalId = setInterval(() => {
-    var nowDate = new Date(); // сегодняшная дата
     const diffDate = countDownDate - nowDate;
     const countTimer = convertMs(diffDate);
-    console.log('time', countTimer);
+
+    refs.days.textContent = countTimer.days;
+    refs.hours.textContent = countTimer.hours;
+    refs.minutes.textContent = countTimer.minutes;
+    refs.seconds.textContent = countTimer.seconds;
   }, 1000);
 } //функция обратного отчета
 
-ClockTimer(); // запуск функции отбартного отчета
+// функция кнопки запуска таймера
+function onStartTimerBtn(params) {
+  ClockTimer(); // запуск функции отбартного отчета
+} // функция кнопки запуска таймера
 
-// var timeinterval = setInterval(updateClock, 1000);
-// console.log('timeinterval', timeinterval);
-/*  function updateClock() {
-    var t = getTimeRemaining(endtime);
-
-    if (t.total <= 0) {
-      clearInterval(timeinterval);
-      var deadline = new Date(Date.parse(new Date()) + 20 * 1000);
-      initializeClock('countdown', deadline);
-    }
-updateClock(); */
-
+//// Инструменты для таймпера
 function pad(value) {
   return String(value).padStart(2, '0');
 }
@@ -77,4 +97,3 @@ function convertMs(ms) {
 
   return { days, hours, minutes, seconds };
 }
-// console.table(convertMs(2000)); // {days: 0, hours: 0, minutes: 0, seconds: 2}
