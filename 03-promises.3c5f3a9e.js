@@ -1,0 +1,2 @@
+refs={form:document.querySelector(".form"),btn:document.querySelector("button")},console.log(refs.form),console.log(refs.btn),(Math.random(),new Promise((function(o,e){}))).then((function(o){var e=o.position,n=o.delay;console.log("✅ Fulfilled promise ".concat(e," in ").concat(n,"ms"))})).catch((function(o){var e=o.position,n=o.delay;console.log("❌ Rejected promise ".concat(e," in ").concat(n,"ms"))}));
+//# sourceMappingURL=03-promises.3c5f3a9e.js.map
