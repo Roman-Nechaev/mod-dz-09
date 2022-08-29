@@ -65,17 +65,21 @@ const timer = {
     checkbtnStop = refs.btn.setAttribute('disabled', true);
 
     this.intervalId = setInterval(() => {
-      const diffDate = countDownDate - new Date();
-      if (diffDate <= 0) {
-        clearInterval(this.intervalId);
-        this.isActiv = false;
+      const diffDate = countDownDate - new Date().getTime();
 
-        Notify.failure('Timer is DONE!!!!');
-      }
-      const countTimer = convertMs(diffDate);
+      let countTimer = convertMs(diffDate);
 
       console.log('countTimer', countTimer);
       updateTimerFace(countTimer);
+      if (diffDate <= 0) {
+        clearInterval(this.intervalId);
+        this.isActiv = false;
+        countTimer = convertMs(0);
+
+        updateTimerFace(countTimer);
+
+        Notify.failure('Timer is DONE!!!!');
+      }
     }, 1000);
   },
 };
@@ -91,7 +95,7 @@ function updateTimerFace({ days, hours, minutes, seconds }) {
 function onInputValue(evt) {
   var d = new Date(); // сегодняшная дата
 
-  countDownDate = new Date(fp.selectedDates);
+  countDownDate = new Date(fp.selectedDates).getTime();
 
   if (countDownDate > d) {
     console.log('Da');
