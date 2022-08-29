@@ -1,14 +1,12 @@
 import flatpickr from 'flatpickr';
+import { Notify } from 'notiflix/build/notiflix-notify-aio';
 
 import 'flatpickr/dist/flatpickr.min.css';
 
 const refs = {
-  // input: document.querySelector('#datetime-picker'),
   input: document.querySelector('input[type="text"]'),
 
   btn: document.querySelector('button[data-start]'),
-
-  timer: document.querySelector('.timer'),
 
   days: document.querySelector('.value[data-days]'),
   hours: document.querySelector('.value[data-hours]'),
@@ -59,12 +57,16 @@ const timer = {
     if (this.isActiv) {
       return;
     }
+
     this.isActiv = true;
     checkbtnStop = refs.btn.setAttribute('disabled', true);
 
     this.intervalId = setInterval(() => {
-      const nowDate = new Date(); // сегодняшная дата
-      const diffDate = countDownDate - nowDate;
+      const diffDate = countDownDate - new Date();
+      if (diffDate <= 0) {
+        console.log('f');
+        clearInterval(this.intervalId);
+      }
       const countTimer = convertMs(diffDate);
       console.log('countTimer', countTimer);
       updateTimerFace(countTimer);
@@ -86,9 +88,15 @@ function onInputValue(evt) {
   countDownDate = new Date(evt.currentTarget.value);
 
   if (countDownDate > d) {
-    console.log('da');
+    console.log('Da');
+    Notify.success('Timer is Ok');
+
     checkbtnStop = refs.btn.removeAttribute('disabled');
   } else {
+    console.log('Ne');
+
+    Notify.failure('Please choose a date in the future');
+
     checkbtnStop = refs.btn.setAttribute('disabled', true);
   }
   // console.log(evt.currentTarget.value);
