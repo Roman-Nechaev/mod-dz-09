@@ -7,7 +7,9 @@ const refs = {
   input: document.querySelector('input[type="text"]'),
 
   btn: document.querySelector('button[data-start]'),
+
   timer: document.querySelector('.timer'),
+
   days: document.querySelector('.value[data-days]'),
   hours: document.querySelector('.value[data-hours]'),
   minutes: document.querySelector('.value[data-minutes]'),
@@ -22,7 +24,6 @@ console.log('seconds', refs.seconds.textContent);
 // console.log('refs', refs.input);
 // console.log('refs', refs.btn);
 // console.log('refs', refs.timer);
-var nowDate = new Date(); // сегодняшная дата
 
 let checkbtnStop = refs.btn.setAttribute('disabled', true);
 
@@ -33,6 +34,12 @@ refs.input.addEventListener('input', onInputValue);
 refs.btn.addEventListener('click', onStartTimerBtn);
 
 flatpickr('input[type="text"]', onflatpickr);
+
+function onflatpickr(evt) {
+  refs.input.value = evt.defaultDate.toLocaleString();
+  console.log(evt.onClose.selectedDates);
+}
+
 const options = {
   enableTime: true,
   time_24hr: true,
@@ -45,33 +52,50 @@ const options = {
 
 onflatpickr(options);
 
-function onflatpickr(evt) {
-  refs.input.value = evt.defaultDate.toLocaleString();
+const timer = {
+  intervalId: null,
+  isActiv: false,
+  start() {
+    if (this.isActiv) {
+      return;
+    }
+    this.isActiv = true;
+    checkbtnStop = refs.btn.setAttribute('disabled', true);
+
+    this.intervalId = setInterval(() => {
+      const nowDate = new Date(); // сегодняшная дата
+      const diffDate = countDownDate - nowDate;
+      const countTimer = convertMs(diffDate);
+      console.log('countTimer', countTimer);
+      updateTimerFace(countTimer);
+    }, 1000);
+  },
+};
+
+//Функция добавление цифр в интерфейс таймера
+function updateTimerFace({ days, hours, minutes, seconds }) {
+  refs.days.textContent = `${days}`;
+  refs.hours.textContent = `${hours}`;
+  refs.minutes.textContent = `${minutes}`;
+  refs.seconds.textContent = `${seconds}`;
 }
 
 function onInputValue(evt) {
+  var d = new Date(); // сегодняшная дата
+
   countDownDate = new Date(evt.currentTarget.value);
-  if (countDownDate > nowDate) {
+
+  if (countDownDate > d) {
+    console.log('da');
     checkbtnStop = refs.btn.removeAttribute('disabled');
+  } else {
+    checkbtnStop = refs.btn.setAttribute('disabled', true);
   }
   // console.log(evt.currentTarget.value);
 }
 
-function ClockTimer(params) {
-  const intervalId = setInterval(() => {
-    const diffDate = countDownDate - nowDate;
-    const countTimer = convertMs(diffDate);
-
-    refs.days.textContent = countTimer.days;
-    refs.hours.textContent = countTimer.hours;
-    refs.minutes.textContent = countTimer.minutes;
-    refs.seconds.textContent = countTimer.seconds;
-  }, 1000);
-} //функция обратного отчета
-
-// функция кнопки запуска таймера
 function onStartTimerBtn(params) {
-  ClockTimer(); // запуск функции отбартного отчета
+  timer.start();
 } // функция кнопки запуска таймера
 
 //// Инструменты для таймпера
