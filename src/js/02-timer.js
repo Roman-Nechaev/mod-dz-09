@@ -5,7 +5,6 @@ import 'flatpickr/dist/flatpickr.min.css';
 const flatpickrInpet = document.querySelector('input#datetime-picker');
 const refs = {
   input: document.querySelector('input[type="text"]'),
-
   btn: document.querySelector('button[data-start]'),
 
   days: document.querySelector('.value[data-days]'),
@@ -21,26 +20,6 @@ var countDownDate = '';
 refs.input.addEventListener('input', onInputValue);
 
 refs.btn.addEventListener('click', onStartTimerBtn);
-
-// flatpickr('input[type="text"]', onflatpickr);
-
-// function onflatpickr(evt) {
-//   refs.input.value = evt.defaultDate.toLocaleString();
-//   console.log(evt.onClose.selectedDates);
-// }
-
-// const options = {
-//   enableTime: true,
-//   time_24hr: true,
-//   defaultDate: new Date(),
-//   dateFormat: 'Y-m-d H:i',
-//   minuteIncrement: 1,
-//   onClose(selectedDates) {
-//     console.log(selectedDates[0]);
-//   },
-// };
-
-// onflatpickr(options);
 
 const fp = flatpickr(flatpickrInpet, {
   enableTime: true,
@@ -78,7 +57,7 @@ const timer = {
 
         updateTimerFace(countTimer);
 
-        Notify.failure('Timer is DONE!!!!');
+        Notify.failure('🥳 Timer is DONE!!!! 🥳 ');
       }
     }, 1000);
   },
