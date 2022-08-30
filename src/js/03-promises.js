@@ -1,3 +1,4 @@
+let positionNum = 1;
 refs = {
   form: document.querySelector('.form'),
   input: document.querySelector('input'),
@@ -27,6 +28,8 @@ function onSobmitForm(e) {
 function createPromise(position, delay) {
   const shouldResolve = Math.random() > 0.3;
   return new Promise((resolve, reject) => {
+    positionNum += 1;
+
     setInterval(() => {
       if (shouldResolve) {
         // Fulfill
@@ -40,7 +43,7 @@ function createPromise(position, delay) {
 }
 
 function funcBefore() {
-  createPromise(2, 2500)
+  createPromise(positionNum, 1000)
     .then(({ position, delay }) => {
       console.log(`✅ Fulfilled promise ${position} in ${delay}ms`);
     })
