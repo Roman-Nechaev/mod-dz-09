@@ -1,4 +1,6 @@
 let positionNum = 1;
+let firstDelay = 0;
+let delayStep = 0;
 refs = {
   form: document.querySelector('.form'),
   input: document.querySelector('input'),
@@ -18,13 +20,11 @@ function onSobmitForm(e) {
 
   let { delay, step, amount } = e.currentTarget;
 
-  console.log(delay.value);
+  firstDelay = delay.value;
 
-  // console.log(step.value);
-  // console.log(amount.value);
-  onBtn(step.value, amount.value);
+  delayStep = step.value;
+  onBtn(delayStep, amount.value);
 }
-
 function createPromise(position, delay) {
   const shouldResolve = Math.random() > 0.3;
   return new Promise((resolve, reject) => {
@@ -43,7 +43,7 @@ function createPromise(position, delay) {
 }
 
 function funcBefore() {
-  createPromise(positionNum, 1000)
+  createPromise(positionNum, firstDelay)
     .then(({ position, delay }) => {
       console.log(`✅ Fulfilled promise ${position} in ${delay}ms`);
     })
@@ -56,8 +56,13 @@ function onBtn(step, amount) {
   count = 0; // начальное значение повтореений
   console.log(amount);
   console.log(step);
+  const foo = 1000;
+  const foo1 = 500;
+
   intervalId = setInterval(function () {
+    console.log((foo += foo1 + foo));
     count += 1;
+    // console.log((firstDelay = firstDelay + step));
     if (count == amount) {
       clearInterval(intervalId);
     }
