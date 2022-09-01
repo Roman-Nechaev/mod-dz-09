@@ -1,36 +1,51 @@
-let positionNum = 1;
-let firstDelay = 0;
+import { Notify } from 'notiflix/build/notiflix-notify-aio';
+
+let firstDelay;
 let delayStep = 0;
-refs = {
-  form: document.querySelector('.form'),
-  input: document.querySelector('input'),
-  btn: document.querySelector('button'),
-};
-console.log(refs.form);
-console.log(refs.input);
-console.log(refs.btn);
+const form = document.querySelector('.form');
+
 ///////////////////////////////////////////////////
 ///////////////////////////////////////////////////
-refs.form.addEventListener('submit', onSobmitForm);
+form.addEventListener('submit', onSobmitForm);
 // refs.btn.addEventListener('click', onBtn);
 //////////////////////////////////////////////////
-
+//форма сабмита /убрана дефолтная перезагрузка формы / диструкторизация полей ввода / onBtn - принимает выводимый в форму интервал и значение количеств повторений
 function onSobmitForm(e) {
   e.preventDefault();
 
   let { delay, step, amount } = e.currentTarget;
-
-  firstDelay = delay.value;
-
-  delayStep = step.value;
-  onBtn(delayStep, amount.value);
+  amountValue = amount.value;
+  firstDelay = Number(delay.value);
+  delayStep = Number(step.value);
+  onBtn(delayStep, amountValue);
 }
+
+// функция при нажатии по кнопке према ввода в сабмите и срабатывания формы / принимает интервал и количество повторений
+function onBtn(step, amount) {
+  count = 0; // начальное значение повтореений
+  //  for (let i = 0; i < amountValue; i++) {
+  //       if (i > 0) {
+  //         firstDelayInputValue += delayStep;
+  //       }
+
+  let goDelay = firstDelay;
+  let goStep = delayStep;
+  intervalId = setInterval(function () {
+    count += 1;
+    goDelay += goStep;
+    // console.log((firstDelay = firstDelay + step));
+    if (count == amount) {
+      clearInterval(intervalId);
+    }
+    onLaunchPromis(count, goDelay); /// вызывает функцию  в которой воводит работу промиса
+  }, step);
+}
+
+/// createPromise - функия работы промиса обрабатывает
 function createPromise(position, delay) {
   const shouldResolve = Math.random() > 0.3;
   return new Promise((resolve, reject) => {
-    positionNum += 1;
-
-    setInterval(() => {
+    setTimeout(() => {
       if (shouldResolve) {
         // Fulfill
         resolve({ position, delay });
@@ -38,48 +53,80 @@ function createPromise(position, delay) {
         // Reject
         reject({ position, delay });
       }
-    }, delay);
+    }, firstDelay);
   });
 }
 
-function funcBefore() {
-  createPromise(positionNum, firstDelay)
+// onLaunchPromis - функчия обрабатывания вывода промисов
+function onLaunchPromis(position, goDelay) {
+  createPromise(position, goDelay) // функция создания промиса принимает positionNum - нумерация промиса / firstDelay - задержка срабатывания промиса
     .then(({ position, delay }) => {
+      Notify.success(`✅ Fulfilled promise ${position} in ${delay}ms`);
       console.log(`✅ Fulfilled promise ${position} in ${delay}ms`);
     })
     .catch(({ position, delay }) => {
+      Notify.failure(`❌ Rejected promise ${position} in ${delay}ms`);
       console.log(`❌ Rejected promise ${position} in ${delay}ms`);
     });
 }
 
-function onBtn(step, amount) {
-  count = 0; // начальное значение повтореений
-  console.log(amount);
-  console.log(step);
-  const foo = 1000;
-  const foo1 = 500;
-
-  intervalId = setInterval(function () {
-    console.log((foo += foo1 + foo));
-    count += 1;
-    // console.log((firstDelay = firstDelay + step));
-    if (count == amount) {
-      clearInterval(intervalId);
-    }
-    funcBefore();
-  }, step);
-}
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// const mass = ['Roman', 'Ragnar', 'Thor', 'Odin']; // массив объектов
-// const promises = mass.map(prom); // возвращает массив объектов
-// // const promises = mass.map(mas => prom(mas)); // идентичная запись что и выше
-// function prom(mas) {
-//   const TIME = 2000; // дефолт интервала
-//   return new Promise(resolve => {
-//     setTimeout(() => {
-//       resolve(mas);
-//     }, TIME);
-//   }); // промис БЕЗ обработки ощибки
-// }
-// prom(promises).then(x => console.log(x)); // результат и вызов промиса
+/* import Notiflix from 'notiflix';
+
+const form = document.querySelector('.form');
+
+form.addEventListener('submit', definePromise);
+
+let amountValue = null;
+let delayTime = null;
+let firstDelayInputValue = null;
+
+function definePromise(event) {
+  event.preventDefault();
+
+  const { elements } = event.currentTarget;
+
+  const { delay, step, amount } = elements;
+  amountValue = Number(amount.value);
+  delayTime = Number(step.value);
+  firstDelayInputValue = Number(delay.value);
+
+  generatePromises(amountValue, firstDelayInputValue);
+
+  function generatePromises(amountValue, firstDelayInputValue) {
+    let position = null;
+
+    for (let i = 0; i < amountValue; i++) {
+      if (i > 0) {
+        firstDelayInputValue += delayTime;
+      }
+      position += 1;
+
+      function createPromise(position, delayTime) {
+        const shouldResolve = Math.random() > 0.3;
+        return new Promise((resolve, reject) => {
+          setTimeout(() => {
+            if (shouldResolve) {
+              resolve({ position, delayTime });
+            } else {
+              reject({ position, delayTime });
+            }
+          }, firstDelayInputValue);
+        });
+      }
+
+      createPromise(position, firstDelayInputValue)
+        .then(({ position, delayTime }) => {
+          Notiflix.Notify.success(
+            `✅ Fulfilled promise ${position} in ${delayTime}ms`
+          );
+        })
+        .catch(({ position, delayTime }) => {
+          Notiflix.Notify.failure(
+            `❌ Rejected promise ${position} in ${delayTime}ms`
+          );
+        });
+    }
+  }
+}
+ */
